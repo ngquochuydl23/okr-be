@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: OKR
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:sqlserver://192.168.88.247:1433;databaseName=okr-be;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: 720798d5-aa5a-476e-a3a3-5e3392324052
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    hikari:
+      pool-name: Hikari
+      auto-commit: false
+      minimum-idle: 10
+      maximum-pool-size: 100
+      max-lifetime: 170000
+      connection-timeout: 30000
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database-platform: org.hibernate.dialect.SQLServerDialect
+  flyway:
+    enabled: true
+    table: 'okr_flyway_schema_history'
+    locations: classpath:db/migrations
+
+server:
+  port: 7777
+  servlet:
+    context-path: /okr-api
+  compression:
+    enabled: true
+    mime-types: text/html;text/plain;text/css;application/javascript;application/json
+    min-response-size: 1024
