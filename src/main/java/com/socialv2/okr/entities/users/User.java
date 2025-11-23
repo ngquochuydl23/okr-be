@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,19 +23,22 @@ import java.util.Set;
 @Table(name = "MUser", schema = "dbo")
 public class User extends BaseEntity {
 
+    @Nationalized
     @Column(name = "FullName", nullable = false)
     private String fullName;
 
+    @Nationalized
     @Column(name = "Email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "Avatar")
     private String avatar;
 
+    @Nationalized
     @Column(name = "Bio")
     private String bio;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "RoleName", referencedColumnName = "RoleName")
     private Role role;
 

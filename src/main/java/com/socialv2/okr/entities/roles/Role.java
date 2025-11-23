@@ -2,8 +2,6 @@ package com.socialv2.okr.entities.roles;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;

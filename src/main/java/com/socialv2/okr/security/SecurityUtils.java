@@ -1,6 +1,5 @@
 package com.socialv2.okr.security;
 
-import com.socialv2.okr.entities.users.User;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,8 +15,8 @@ public class SecurityUtils {
     }
 
     private static String extractUserId(Authentication authentication) {
-        if (Objects.nonNull(authentication) && authentication.getPrincipal() instanceof User user) {
-            return user.getId().toString();
+        if (Objects.nonNull(authentication) && authentication.getPrincipal() instanceof UserInfo user) {
+            return user.id();
         }
         return "admin";
     }

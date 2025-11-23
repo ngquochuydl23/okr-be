@@ -1,9 +1,9 @@
 spring:
   application:
-    name: OKR
+    name: okr-be
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:sqlserver://192.168.88.247:1433;databaseName=okr-be;encrypt=true;trustServerCertificate=true
+    url:
     username: sa
     password: 720798d5-aa5a-476e-a3a3-5e3392324052
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -29,10 +29,26 @@ spring:
     table: 'okr_flyway_schema_history'
     locations: classpath:db/migrations
 
+google:
+  client-id:
+  client-secret:
+  redirect-uri:
+  scope:
+
+frontend:
+  url:
+jwt:
+  secret:
+
+app:
+  cors:
+    allowed-credentials: true
+    allowed-origins: '*'
+
 server:
   port: 7777
   servlet:
-    context-path: /okr-api
+    context-path: /okr-api/v1
   compression:
     enabled: true
     mime-types: text/html;text/plain;text/css;application/javascript;application/json

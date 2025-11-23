@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
 
 @Getter
 @Setter
@@ -15,6 +16,7 @@ import lombok.*;
 @Table(name = "KeyResult", schema = "dbo")
 public class MeasureUnit extends BaseEntity {
 
+    @Nationalized
     @Column(name = "Name")
     private String name;
 

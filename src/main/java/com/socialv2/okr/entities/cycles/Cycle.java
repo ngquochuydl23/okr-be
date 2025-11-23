@@ -4,6 +4,7 @@ import com.socialv2.okr.entities.BaseEntity;
 import com.socialv2.okr.entities.workspaces.Workspace;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
 
 @Getter
 @Setter
@@ -14,9 +15,11 @@ import lombok.*;
 @Table(name = "Cycle", schema = "dbo")
 public class Cycle extends BaseEntity {
 
+    @Nationalized
     @Column(name = "Name", nullable = false)
     private String name;
 
+    @Nationalized
     @Column(name = "Description")
     private String description;
 

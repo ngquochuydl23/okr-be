@@ -6,6 +6,7 @@ import com.socialv2.okr.entities.objectives.Objective;
 import com.socialv2.okr.entities.users.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Table(name = "KeyResult", schema = "dbo")
 public class KeyResult extends BaseEntity {
 
+    @Nationalized
     @Column(name = "Name")
     private String name;
 

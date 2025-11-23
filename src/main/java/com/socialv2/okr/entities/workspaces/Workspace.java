@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +21,7 @@ import java.util.Set;
 @Table(name = "Workspace", schema = "dbo")
 public class Workspace extends BaseEntity {
 
+    @Nationalized
     @Column(name = "Name", nullable = false)
     private String name;
 
