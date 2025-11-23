@@ -1,4 +1,4 @@
-package com.socialv2.okr.controller;
+package com.socialv2.okr.controller.workspace;
 
 import com.socialv2.okr.dto.workspace.WorkspaceDTO;
 import com.socialv2.okr.service.WorkspaceService;
