@@ -1,6 +1,7 @@
 package com.socialv2.okr.entities.keyResults;
 
 import com.socialv2.okr.entities.BaseEntity;
+import com.socialv2.okr.entities.checkin.CheckIn;
 import com.socialv2.okr.entities.measureUnits.MeasureUnit;
 import com.socialv2.okr.entities.objectives.Objective;
 import com.socialv2.okr.entities.users.User;
@@ -36,6 +37,9 @@ public class KeyResult extends BaseEntity {
     @Column(name = "KeyResultOrder")
     private int keyResultOrder;
 
+    @Column(name = "Change")
+    private double change;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "MeasureUnitId", referencedColumnName = "Id")
     private MeasureUnit measureUnit;
@@ -51,4 +55,7 @@ public class KeyResult extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "UserId", referencedColumnName = "Id")
     )
     private Set<User> supporters = new HashSet<>();
+
+    @OneToMany(mappedBy = "keyResult")
+    private Set<KeyResultComment> comments = new HashSet<>();
 }

@@ -1,9 +1,11 @@
 package com.socialv2.okr.entities.users;
 
 import com.socialv2.okr.entities.BaseEntity;
+import com.socialv2.okr.entities.checkin.CheckIn;
 import com.socialv2.okr.entities.keyResults.KeyResult;
 import com.socialv2.okr.entities.roles.Role;
 import com.socialv2.okr.entities.teams.TeamUser;
+import com.socialv2.okr.entities.workspaces.Workspace;
 import com.socialv2.okr.entities.workspaces.WorkspaceUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -45,9 +47,16 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user" , orphanRemoval = true)
     private Set<WorkspaceUser> workspaceUsers = new HashSet<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CurrentWorkspaceId", referencedColumnName = "Id")
+    private Workspace currentWorkspace;
+
     @OneToMany(mappedBy = "user",  orphanRemoval = true)
     private Set<TeamUser> teamUsers = new HashSet<>();
 
     @ManyToMany(mappedBy = "supporters")
     private Set<KeyResult> supportingKeyResults = new HashSet<>();
+
+    @OneToMany(mappedBy = "reporter")
+    private Set<CheckIn> reportedCheckIns = new HashSet<>();
 }

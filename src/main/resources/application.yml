@@ -5,7 +5,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url:
     username: sa
-    password: 720798d5-aa5a-476e-a3a3-5e3392324052
+    password:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
     hikari:
       pool-name: Hikari
@@ -21,7 +21,7 @@ spring:
         useServerPrepStmts: true
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: drop-and-create
     show-sql: true
     database-platform: org.hibernate.dialect.SQLServerDialect
   flyway:
@@ -36,9 +36,13 @@ google:
   scope:
 
 frontend:
-  url:
+  url: http://localhost:5173
 jwt:
   secret:
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
 
 app:
   cors:
