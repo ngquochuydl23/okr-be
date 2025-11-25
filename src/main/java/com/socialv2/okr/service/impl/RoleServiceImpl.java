@@ -39,12 +39,15 @@ public class RoleServiceImpl implements RoleService {
                 });
         
         Set<Permission> permissions = new HashSet<>();
-        if (request.getPermissionIds() != null && !request.getPermissionIds().isEmpty()) {
-            permissions = new HashSet<>(permissionRepository.findByIdIn(
-                    request.getPermissionIds().stream().collect(Collectors.toList())
-            ));
-        }
-        
+//        if (request.getPermissionIds() != null && !request.getPermissionIds().isEmpty()) {
+//            permissions = new HashSet<>(permissionRepository.findByIdIn(
+//                    request
+//                            .getPermissionIds()
+//                            .stream()
+//                            .toList()
+//            ));
+//        }
+//
         Role role = Role.builder()
                 .roleName(request.getRoleName())
                 .description(request.getDescription())
@@ -80,13 +83,9 @@ public class RoleServiceImpl implements RoleService {
         Role role = roleRepository.findById(roleName)
                 .orElseThrow(() -> new RuntimeException("Role not found with name: " + roleName));
         
-        List<UUID> uuidPermissionIds = permissionIds.stream()
-                .map(UUID::fromString)
-                .collect(Collectors.toList());
-        
-        List<Permission> permissions = permissionRepository.findByIdIn(uuidPermissionIds);
-        role.getPermissions().addAll(permissions);
-        
+//        List<Permission> permissions = permissionRepository.findByIdIn(permissionIds);
+//        role.getPermissions().addAll(permissions);
+//
         Role updatedRole = roleRepository.save(role);
         return mapper.map(updatedRole, RoleDTO.class);
     }
@@ -97,12 +96,7 @@ public class RoleServiceImpl implements RoleService {
         
         Role role = roleRepository.findById(roleName)
                 .orElseThrow(() -> new RuntimeException("Role not found with name: " + roleName));
-        
-        Set<UUID> uuidPermissionIds = permissionIds.stream()
-                .map(UUID::fromString)
-                .collect(Collectors.toSet());
-        
-        role.getPermissions().removeIf(permission -> uuidPermissionIds.contains(permission.getId()));
+        role.getPermissions().removeIf(permission -> permissionIds.contains(permission.getPermissionName()));
         
         Role updatedRole = roleRepository.save(role);
         return mapper.map(updatedRole, RoleDTO.class);

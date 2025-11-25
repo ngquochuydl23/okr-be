@@ -44,7 +44,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     @Transactional(readOnly = true)
-    public PermissionDTO getPermissionById(UUID id) {
+    public PermissionDTO getPermissionById(String id) {
         log.info("Fetching permission with id: {}", id);
         Permission permission = permissionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Permission not found with id: " + id));
@@ -70,7 +70,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public void deletePermission(UUID id) {
+    public void deletePermission(String id) {
         log.info("Deleting permission with id: {}", id);
         
         Permission permission = permissionRepository.findById(id)

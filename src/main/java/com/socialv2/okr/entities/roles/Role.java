@@ -29,7 +29,7 @@ public class Role implements Serializable {
             name = "RolePermission",
             schema = "dbo",
             joinColumns = @JoinColumn(name = "RoleId", referencedColumnName = "RoleName"),
-            inverseJoinColumns = @JoinColumn(name = "PermissionId", referencedColumnName = "Id")
+            inverseJoinColumns = @JoinColumn(name = "PermissionId", referencedColumnName = "Name")
     )
     private Set<Permission> permissions = new HashSet<>();
 }

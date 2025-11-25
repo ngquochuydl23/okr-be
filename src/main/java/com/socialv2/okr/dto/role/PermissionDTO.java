@@ -12,7 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PermissionDTO {
-    private UUID id;
     private String permissionName;
     private String description;
 }

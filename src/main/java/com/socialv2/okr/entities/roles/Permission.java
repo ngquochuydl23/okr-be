@@ -20,10 +20,6 @@ public class Permission implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "Id", nullable = false, unique = true)
-    private UUID id;
-
     @Column(name = "Name", nullable = false, unique = true)
     private String permissionName;
 

@@ -21,7 +21,7 @@ spring:
         useServerPrepStmts: true
   jpa:
     hibernate:
-      ddl-auto: drop-and-create
+      ddl-auto: none
     show-sql: true
     database-platform: org.hibernate.dialect.SQLServerDialect
   flyway:

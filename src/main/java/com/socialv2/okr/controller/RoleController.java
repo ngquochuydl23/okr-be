@@ -71,7 +71,7 @@ public class RoleController {
     }
 
     @GetMapping("/permissions/{permissionId}")
-    public ResponseEntity<PermissionDTO> getPermissionById(@PathVariable UUID permissionId) {
+    public ResponseEntity<PermissionDTO> getPermissionById(@PathVariable String permissionId) {
         PermissionDTO permission = permissionService.getPermissionById(permissionId);
         return ResponseEntity.ok(permission);
     }
@@ -89,7 +89,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/permissions/{permissionId}")
-    public ResponseEntity<Void> deletePermission(@PathVariable UUID permissionId) {
+    public ResponseEntity<Void> deletePermission(@PathVariable String permissionId) {
         permissionService.deletePermission(permissionId);
         return ResponseEntity.noContent().build();
     }

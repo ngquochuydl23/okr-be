@@ -19,5 +19,5 @@ public class CreateRoleRequest {
     
     private String description;
     
-    private Set<UUID> permissionIds;
+    private Set<String> permissionIds;
 }

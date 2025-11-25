@@ -1,6 +1,7 @@
 package com.socialv2.okr.service.impl;
 
 import com.socialv2.okr.dto.GoogleUserInfo;
+import com.socialv2.okr.dto.team.TeamDTO;
 import com.socialv2.okr.dto.user.UserDTO;
 import com.socialv2.okr.entities.roles.Role;
 import com.socialv2.okr.entities.roles.RoleEnum;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,8 +39,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(team -> mapper.map(team, UserDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override

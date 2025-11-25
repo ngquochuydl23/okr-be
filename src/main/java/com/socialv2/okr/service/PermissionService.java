@@ -9,11 +9,11 @@ import java.util.UUID;
 public interface PermissionService {
     PermissionDTO createPermission(CreatePermissionRequest request);
     
-    PermissionDTO getPermissionById(UUID id);
+    PermissionDTO getPermissionById(String id);
     
     PermissionDTO getPermissionByName(String permissionName);
     
     List<PermissionDTO> getAllPermissions();
     
-    void deletePermission(UUID id);
+    void deletePermission(String id);
 }
