@@ -13,7 +13,7 @@ GO
 CREATE TABLE [okr-be].dbo.permission (
     description varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
     name varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-    CONSTRAINT PK__permissi__72E12F1A5AF8D253 PRIMARY KEY (name)
+    CONSTRAINT PK_Permission PRIMARY KEY (name)
 );
 GO
 
@@ -22,7 +22,7 @@ GO
 CREATE TABLE [okr-be].dbo.[role] (
     description varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
     role_name varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-    CONSTRAINT PK__role__783254B0A27E31DA PRIMARY KEY (role_name)
+    CONSTRAINT PK_Role PRIMARY KEY (role_name)
 );
 GO
 
@@ -31,7 +31,7 @@ GO
 CREATE TABLE [okr-be].dbo.role_permission (
     permission_id varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
     role_id varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-    CONSTRAINT PK__role_per__32538CA6502D0B33 PRIMARY KEY (permission_id,role_id)
+    CONSTRAINT PK_RolePermission PRIMARY KEY (permission_id,role_id)
 ); -- Thêm dấu chấm phẩy sau CREATE TABLE
 GO
 
@@ -44,7 +44,7 @@ CREATE TABLE [okr-be].dbo.check_in (
     id uniqueidentifier NOT NULL,
     objective_id uniqueidentifier NULL,
     reporter_id uniqueidentifier NULL,
-    CONSTRAINT PK__check_in__3213E83FFC573B5C PRIMARY KEY (id)
+    CONSTRAINT PK_CheckIn PRIMARY KEY (id)
 );
 GO
 
@@ -61,10 +61,10 @@ CREATE TABLE [okr-be].dbo.check_in_detail (
     check_in_id uniqueidentifier NULL,
     id uniqueidentifier NOT NULL,
     key_result_id uniqueidentifier NULL,
-    CONSTRAINT PK__check_in__3213E83F6A5FBA37 PRIMARY KEY (id)
+    CONSTRAINT PK_CheckInDetail PRIMARY KEY (id)
 );
 GO
-ALTER TABLE [okr-be].dbo.check_in_detail WITH NOCHECK ADD CONSTRAINT CK__check_in___confi__7D98A078 CHECK (([confidence_level_enum]>=(0) AND [confidence_level_enum]<=(2)));
+ALTER TABLE [okr-be].dbo.check_in_detail WITH NOCHECK ADD CONSTRAINT CK_CheckInDetail_ConfidenceLevel CHECK (([confidence_level_enum]>=(0) AND [confidence_level_enum]<=(2)));
 GO -- Thêm GO sau ALTER TABLE
 
 DROP TABLE IF EXISTS  [okr-be].dbo.[cycle];
@@ -77,7 +77,7 @@ CREATE TABLE [okr-be].dbo.[cycle] (
     workspace_id uniqueidentifier NULL,
     description nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
     name nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-    CONSTRAINT PK__cycle__3213E83FBC2E1423 PRIMARY KEY (id)
+    CONSTRAINT PK_Cycle PRIMARY KEY (id)
 );
 GO
 
@@ -99,12 +99,12 @@ CREATE TABLE [okr-be].dbo.key_result (
     measure_unit_id uniqueidentifier NULL,
     objective_id uniqueidentifier NULL,
     name nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-    CONSTRAINT PK__key_resu__3213E83FC0673081 PRIMARY KEY (id)
+    CONSTRAINT PK_KeyResult PRIMARY KEY (id)
 );
 GO -- Thêm GO sau CREATE TABLE
 
 -- Đảm bảo có dấu chấm phẩy sau lệnh CREATE INDEX
-CREATE UNIQUE NONCLUSTERED INDEX UKt157bc3rl8r8hfo90xh19rsm7 ON [okr-be].dbo.key_result (  measure_unit_id ASC  )
+CREATE UNIQUE NONCLUSTERED INDEX UK_KeyResult_MeasureUnitId ON [okr-be].dbo.key_result (  measure_unit_id ASC  )
      WHERE  ([measure_unit_id] IS NOT NULL)
      WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
      ON [PRIMARY];
@@ -120,7 +120,7 @@ CREATE TABLE [okr-be].dbo.key_result_comment (
     key_result_id uniqueidentifier NULL,
     user_id uniqueidentifier NULL,
     comment nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-    CONSTRAINT PK__key_resu__3213E83FBB45F195 PRIMARY KEY (id)
+    CONSTRAINT PK_KeyResultComment PRIMARY KEY (id)
 );
 GO
 
@@ -129,7 +129,7 @@ GO
 CREATE TABLE [okr-be].dbo.key_result_supporter (
     key_result_id uniqueidentifier NOT NULL,
     user_id uniqueidentifier NOT NULL,
-    CONSTRAINT PK__key_resu__7D180384A30D0F81 PRIMARY KEY (key_result_id,user_id)
+    CONSTRAINT PK_KeyResultSupporter PRIMARY KEY (key_result_id,user_id)
 );
 GO
 
@@ -146,18 +146,18 @@ CREATE TABLE [okr-be].dbo.muser (
     email nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
     full_name nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
     role_name varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-    CONSTRAINT PK__muser__3213E83F76942F86 PRIMARY KEY (id),
-    CONSTRAINT UK7kuv609oustl7r8kpdgnktbfp UNIQUE (email)
+    CONSTRAINT PK_User PRIMARY KEY (id),
+    CONSTRAINT UK_User_Email UNIQUE (email)
 );
 GO -- Thêm GO sau CREATE TABLE
 
 -- Đảm bảo có dấu chấm phẩy sau lệnh CREATE INDEX
-CREATE UNIQUE NONCLUSTERED INDEX UK8k1gk6l4ebj21t7flbauilhtk ON [okr-be].dbo.muser (  current_workspace_id ASC  )  
+CREATE UNIQUE NONCLUSTERED INDEX UK_User_CurrentWorkspaceId ON [okr-be].dbo.muser (  current_workspace_id ASC  )  
      WHERE  ([current_workspace_id] IS NOT NULL)
      WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
      ON [PRIMARY ];
 GO
-CREATE UNIQUE NONCLUSTERED INDEX UK9mi1kj2ry98rfbgi3e67aaxdb ON [okr-be].dbo.muser (  role_name ASC  )  
+CREATE UNIQUE NONCLUSTERED INDEX UK_User_RoleName ON [okr-be].dbo.muser (  role_name ASC  )  
      WHERE  ([role_name] IS NOT NULL)
      WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
      ON [PRIMARY ];
@@ -179,27 +179,27 @@ CREATE TABLE [okr-be].dbo.objective (
     workspace_id uniqueidentifier NULL,
     description nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
     name nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-    CONSTRAINT PK__objectiv__3213E83F4A2A4466 PRIMARY KEY (id)
+    CONSTRAINT PK_Objective PRIMARY KEY (id)
 );
 GO -- Thêm GO sau CREATE TABLE
 
 -- Đảm bảo có dấu chấm phẩy sau lệnh CREATE INDEX
-CREATE UNIQUE NONCLUSTERED INDEX UK1fhjdi440us56rfjuda24vie6 ON [okr-be].dbo.objective (  creator_id ASC  )  
+CREATE UNIQUE NONCLUSTERED INDEX UK_Objective_CreatorId ON [okr-be].dbo.objective (  creator_id ASC  )  
      WHERE  ([creator_id] IS NOT NULL)
      WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
      ON [PRIMARY ];
 GO
-CREATE UNIQUE NONCLUSTERED INDEX UK6375byphgk2hqtmelr2fahit2 ON [okr-be].dbo.objective (  parent_objective_id ASC  )  
+CREATE UNIQUE NONCLUSTERED INDEX UK_Objective_ParentObjectiveId ON [okr-be].dbo.objective (  parent_objective_id ASC  )  
      WHERE  ([parent_objective_id] IS NOT NULL)
      WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
      ON [PRIMARY ];
 GO
-CREATE UNIQUE NONCLUSTERED INDEX UK80uu3cwhchkha0q4t1n8vkdc2 ON [okr-be].dbo.objective (  cycle_id ASC  )  
+CREATE UNIQUE NONCLUSTERED INDEX UK_Objective_CycleId ON [okr-be].dbo.objective (  cycle_id ASC  )  
      WHERE  ([cycle_id] IS NOT NULL)
      WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
      ON [PRIMARY ];
 GO
-CREATE UNIQUE NONCLUSTERED INDEX UK9rfodvtj0d0alj5vmv18pf06o ON [okr-be].dbo.objective (  responsible_user_id ASC  )  
+CREATE UNIQUE NONCLUSTERED INDEX UK_Objective_ResponsibleUserId ON [okr-be].dbo.objective (  responsible_user_id ASC  )  
      WHERE  ([responsible_user_id] IS NOT NULL)
      WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
      ON [PRIMARY ];
@@ -215,7 +215,7 @@ CREATE TABLE [okr-be].dbo.team (
     parent_team_id uniqueidentifier NULL,
     workspace_id uniqueidentifier NULL,
     name nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-    CONSTRAINT PK__team__3213E83FF9EB4610 PRIMARY KEY (id)
+    CONSTRAINT PK_Team PRIMARY KEY (id)
 );
 GO
 
@@ -228,7 +228,7 @@ CREATE TABLE [okr-be].dbo.team_user (
     id uniqueidentifier NOT NULL,
     team_id uniqueidentifier NOT NULL,
     user_id uniqueidentifier NOT NULL,
-    CONSTRAINT PK__team_use__3213E83FDF736714 PRIMARY KEY (id)
+    CONSTRAINT PK_TeamUser PRIMARY KEY (id)
 );
 GO
 
@@ -243,10 +243,10 @@ CREATE TABLE [okr-be].dbo.workspace (
     owner_id uniqueidentifier NULL,
     avatar varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
     name nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-    CONSTRAINT PK__workspac__3213E83F1E50A165 PRIMARY KEY (id)
+    CONSTRAINT PK_Workspace PRIMARY KEY (id)
 );
 GO
-ALTER TABLE [okr-be].dbo.workspace WITH NOCHECK ADD CONSTRAINT CK__workspace__type__119F9925 CHECK (([type]>=(0) AND [type]<=(3)));
+ALTER TABLE [okr-be].dbo.workspace WITH NOCHECK ADD CONSTRAINT CK_Workspace_Type CHECK (([type]>=(0) AND [type]<=(3)));
 GO -- Thêm GO sau ALTER TABLE
 
 DROP TABLE IF EXISTS  [okr-be].dbo.workspace_user;
@@ -258,7 +258,7 @@ CREATE TABLE [okr-be].dbo.workspace_user (
     id uniqueidentifier NOT NULL,
     user_id uniqueidentifier NULL,
     workspace_id uniqueidentifier NULL,
-    CONSTRAINT PK__workspac__3213E83FD764A4DC PRIMARY KEY (id)
+    CONSTRAINT PK_WorkspaceUser PRIMARY KEY (id)
 );
 GO
 
@@ -267,77 +267,77 @@ GO
 --------------------------------------------------------------------------------
 
 -- [okr-be].dbo.check_in foreign keys
-ALTER TABLE [okr-be].dbo.check_in ADD CONSTRAINT FKb2t2p2xag74gt95rj2ohcw25k FOREIGN KEY (objective_id) REFERENCES [okr-be].dbo.objective(id);
+ALTER TABLE [okr-be].dbo.check_in ADD CONSTRAINT FK_CheckIn_Objective FOREIGN KEY (objective_id) REFERENCES [okr-be].dbo.objective(id);
 GO
-ALTER TABLE [okr-be].dbo.check_in ADD CONSTRAINT FKostl5acigglxwggnwf3q3e3gf FOREIGN KEY (reporter_id) REFERENCES [okr-be].dbo.muser(id);
+ALTER TABLE [okr-be].dbo.check_in ADD CONSTRAINT FK_CheckIn_Reporter FOREIGN KEY (reporter_id) REFERENCES [okr-be].dbo.muser(id);
 GO
 
 -- [okr-be].dbo.check_in_detail foreign keys
-ALTER TABLE [okr-be].dbo.check_in_detail ADD CONSTRAINT FK12q6lvmaoqdyctcjrlmg6gda0 FOREIGN KEY (key_result_id) REFERENCES [okr-be].dbo.key_result(id);
+ALTER TABLE [okr-be].dbo.check_in_detail ADD CONSTRAINT FK_CheckInDetail_KeyResult FOREIGN KEY (key_result_id) REFERENCES [okr-be].dbo.key_result(id);
 GO
-ALTER TABLE [okr-be].dbo.check_in_detail ADD CONSTRAINT FKnjcp0uc07q5n7cfj9tdtwf33g FOREIGN KEY (check_in_id) REFERENCES [okr-be].dbo.check_in(id);
+ALTER TABLE [okr-be].dbo.check_in_detail ADD CONSTRAINT FK_CheckInDetail_CheckIn FOREIGN KEY (check_in_id) REFERENCES [okr-be].dbo.check_in(id);
 GO
 
 -- [okr-be].dbo.[cycle] foreign keys
-ALTER TABLE [okr-be].dbo.[cycle] ADD CONSTRAINT FKii5xwi3n2x37y9w092yk5dgbj FOREIGN KEY (workspace_id) REFERENCES [okr-be].dbo.workspace(id);
+ALTER TABLE [okr-be].dbo.[cycle] ADD CONSTRAINT FK_Cycle_Workspace FOREIGN KEY (workspace_id) REFERENCES [okr-be].dbo.workspace(id);
 GO
 
 -- [okr-be].dbo.key_result foreign keys
-ALTER TABLE [okr-be].dbo.key_result ADD CONSTRAINT FK7w5sy6rljmf828riu0v329cm5 FOREIGN KEY (measure_unit_id) REFERENCES [okr-be].dbo.key_result(id);
+ALTER TABLE [okr-be].dbo.key_result ADD CONSTRAINT FK_KeyResult_MeasureUnit FOREIGN KEY (measure_unit_id) REFERENCES [okr-be].dbo.key_result(id);
 GO
-ALTER TABLE [okr-be].dbo.key_result ADD CONSTRAINT FKrvcqyntd3p3kj8i7n0kuwbmqk FOREIGN KEY (objective_id) REFERENCES [okr-be].dbo.objective(id);
+ALTER TABLE [okr-be].dbo.key_result ADD CONSTRAINT FK_KeyResult_Objective FOREIGN KEY (objective_id) REFERENCES [okr-be].dbo.objective(id);
 GO
 
 -- [okr-be].dbo.key_result_comment foreign keys
-ALTER TABLE [okr-be].dbo.key_result_comment ADD CONSTRAINT FKo8ejjt1vtih7us9l9f8q0k32g FOREIGN KEY (key_result_id) REFERENCES [okr-be].dbo.key_result(id);
+ALTER TABLE [okr-be].dbo.key_result_comment ADD CONSTRAINT FK_KeyResultComment_KeyResult FOREIGN KEY (key_result_id) REFERENCES [okr-be].dbo.key_result(id);
 GO
-ALTER TABLE [okr-be].dbo.key_result_comment ADD CONSTRAINT FKqjm34lvm184o24oet3ndnt30f FOREIGN KEY (user_id) REFERENCES [okr-be].dbo.muser(id);
+ALTER TABLE [okr-be].dbo.key_result_comment ADD CONSTRAINT FK_KeyResultComment_User FOREIGN KEY (user_id) REFERENCES [okr-be].dbo.muser(id);
 GO
 
 -- [okr-be].dbo.key_result_supporter foreign keys
-ALTER TABLE [okr-be].dbo.key_result_supporter ADD CONSTRAINT FKnam90c8853yhs27lpqafppl6e FOREIGN KEY (key_result_id) REFERENCES [okr-be].dbo.key_result(id);
+ALTER TABLE [okr-be].dbo.key_result_supporter ADD CONSTRAINT FK_KeyResultSupporter_KeyResult FOREIGN KEY (key_result_id) REFERENCES [okr-be].dbo.key_result(id);
 GO
-ALTER TABLE [okr-be].dbo.key_result_supporter ADD CONSTRAINT FKpvjbqlx61ib11f81b4avd5jl9 FOREIGN KEY (user_id) REFERENCES [okr-be].dbo.muser(id);
+ALTER TABLE [okr-be].dbo.key_result_supporter ADD CONSTRAINT FK_KeyResultSupporter_User FOREIGN KEY (user_id) REFERENCES [okr-be].dbo.muser(id);
 GO
 
 -- [okr-be].dbo.muser foreign keys
-ALTER TABLE [okr-be].dbo.muser ADD CONSTRAINT FK593ewny5d83cryfjv5ru55od2 FOREIGN KEY (role_name) REFERENCES [okr-be].dbo.[role](role_name);
+ALTER TABLE [okr-be].dbo.muser ADD CONSTRAINT FK_User_Role FOREIGN KEY (role_name) REFERENCES [okr-be].dbo.[role](role_name);
 GO
-ALTER TABLE [okr-be].dbo.muser ADD CONSTRAINT FKjjbehog0nbq0lenattv66llgh FOREIGN KEY (current_workspace_id) REFERENCES [okr-be].dbo.workspace(id);
+ALTER TABLE [okr-be].dbo.muser ADD CONSTRAINT FK_User_CurrentWorkspace FOREIGN KEY (current_workspace_id) REFERENCES [okr-be].dbo.workspace(id);
 GO
 
 -- [okr-be].dbo.objective foreign keys
-ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FK73khxsng41plxcjxieclcq0ca FOREIGN KEY (workspace_id) REFERENCES [okr-be].dbo.workspace(id);
+ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FK_Objective_Workspace FOREIGN KEY (workspace_id) REFERENCES [okr-be].dbo.workspace(id);
 GO
-ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FK8h2m4kk8wt96ran9rgxn9n3to FOREIGN KEY (team_id) REFERENCES [okr-be].dbo.team(id);
+ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FK_Objective_Team FOREIGN KEY (team_id) REFERENCES [okr-be].dbo.team(id);
 GO
-ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FKb8n43snod50xhr8ssfagrrlxs FOREIGN KEY (responsible_user_id) REFERENCES [okr-be].dbo.muser(id);
+ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FK_Objective_ResponsibleUser FOREIGN KEY (responsible_user_id) REFERENCES [okr-be].dbo.muser(id);
 GO
-ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FKeqlborwd8e9qjmpoo061bc8ac FOREIGN KEY (cycle_id) REFERENCES [okr-be].dbo.[cycle](id);
+ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FK_Objective_Cycle FOREIGN KEY (cycle_id) REFERENCES [okr-be].dbo.[cycle](id);
 GO
-ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FKr2k6i1sno1p2n5o9keebri9de FOREIGN KEY (creator_id) REFERENCES [okr-be].dbo.muser(id);
+ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FK_Objective_Creator FOREIGN KEY (creator_id) REFERENCES [okr-be].dbo.muser(id);
 GO
-ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FKsq3x9rkdop29lyub1to7pr9rc FOREIGN KEY (parent_objective_id) REFERENCES [okr-be].dbo.objective(id);
+ALTER TABLE [okr-be].dbo.objective ADD CONSTRAINT FK_Objective_ParentObjective FOREIGN KEY (parent_objective_id) REFERENCES [okr-be].dbo.objective(id);
 GO
 
 -- [okr-be].dbo.team foreign keys
-ALTER TABLE [okr-be].dbo.team ADD CONSTRAINT FK13ubj3frsnn4adnc9x2y8qp6n FOREIGN KEY (parent_team_id) REFERENCES [okr-be].dbo.team(id);
+ALTER TABLE [okr-be].dbo.team ADD CONSTRAINT FK_Team_ParentTeam FOREIGN KEY (parent_team_id) REFERENCES [okr-be].dbo.team(id);
 GO
-ALTER TABLE [okr-be].dbo.team ADD CONSTRAINT FKhu7l1af1d1n1foj4k082dixd7 FOREIGN KEY (workspace_id) REFERENCES [okr-be].dbo.workspace(id);
+ALTER TABLE [okr-be].dbo.team ADD CONSTRAINT FK_Team_Workspace FOREIGN KEY (workspace_id) REFERENCES [okr-be].dbo.workspace(id);
 GO
 
 -- [okr-be].dbo.team_user foreign keys
-ALTER TABLE [okr-be].dbo.team_user ADD CONSTRAINT FKiuwi96twuthgvhnarqj34mnjv FOREIGN KEY (team_id) REFERENCES [okr-be].dbo.team(id);
+ALTER TABLE [okr-be].dbo.team_user ADD CONSTRAINT FK_TeamUser_Team FOREIGN KEY (team_id) REFERENCES [okr-be].dbo.team(id);
 GO
-ALTER TABLE [okr-be].dbo.team_user ADD CONSTRAINT FKpa4yhjpookdmxsscijs6ja6p FOREIGN KEY (user_id) REFERENCES [okr-be].dbo.muser(id);
+ALTER TABLE [okr-be].dbo.team_user ADD CONSTRAINT FK_TeamUser_User FOREIGN KEY (user_id) REFERENCES [okr-be].dbo.muser(id);
 GO
 
 -- [okr-be].dbo.workspace foreign keys
-ALTER TABLE [okr-be].dbo.workspace ADD CONSTRAINT FKjc02gdvlu1yt5isnk0ey2ydp8 FOREIGN KEY (owner_id) REFERENCES [okr-be].dbo.muser(id);
+ALTER TABLE [okr-be].dbo.workspace ADD CONSTRAINT FK_Workspace_Owner FOREIGN KEY (owner_id) REFERENCES [okr-be].dbo.muser(id);
 GO
 
 -- [okr-be].dbo.workspace_user foreign keys
-ALTER TABLE [okr-be].dbo.workspace_user ADD CONSTRAINT FKhkrwafax9362p5dpi70tagivs FOREIGN KEY (user_id) REFERENCES [okr-be].dbo.muser(id);
+ALTER TABLE [okr-be].dbo.workspace_user ADD CONSTRAINT FK_WorkspaceUser_User FOREIGN KEY (user_id) REFERENCES [okr-be].dbo.muser(id);
 GO
-ALTER TABLE [okr-be].dbo.workspace_user ADD CONSTRAINT FKjek9w7728njryydpb6r7wa1lk FOREIGN KEY (workspace_id) REFERENCES [okr-be].dbo.workspace(id);
+ALTER TABLE [okr-be].dbo.workspace_user ADD CONSTRAINT FK_WorkspaceUser_Workspace FOREIGN KEY (workspace_id) REFERENCES [okr-be].dbo.workspace(id);
 GO -- Đảm bảo kết thúc bằng GO cuối cùng
